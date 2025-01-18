@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)  # Ensure the compiler enforces the standa
 set(CMAKE_CXX_EXTENSIONS OFF)  # Disable compiler-specific extensions
 
 # Find Boost
-set(BOOST_ROOT "/opt/homebrew/Cellar/boost/1.85.0")
 find_package(Boost 1.85.0 REQUIRED COMPONENTS system filesystem)
 
 if(Boost_FOUND)
