@@ -1,16 +1,19 @@
-#include <stdio.h>
-#include <iostream>
-#include <boost/version.hpp>
+#include <gtest/gtest.h>
+#include "LRUCache.hpp"
+// Include your application headers if needed
+// #include "my_application.h"
 
-int main(int, char**){
+int main(int argc, char **argv) {
+    // Initialize Google Test framework
+    ::testing::InitGoogleTest(&argc, argv);
 
-   std::cout << "Boost version: " 
-              << BOOST_VERSION / 100000 << "."  // Major version
-              << BOOST_VERSION / 100 % 1000 << "."  // Minor version
-              << BOOST_VERSION % 100  // Patch level
-              << std::endl;
- 
+    // Run all tests
+    return RUN_ALL_TESTS();
 
-    int x = 42;
-    printf("Hello, from main! x is %d.\n", x);
+    // If you want to conditionally execute your application logic, uncomment below:
+    /*
+    // Run your application logic when not testing
+    // MyApplication app;
+    // return app.run(argc, argv);
+    */
 }
