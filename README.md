@@ -1,38 +1,120 @@
-Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+# Implement a LRU Cache
 
-Implement the LRUCache class:
+An efficient implementation of a Least Recently Used (LRU) cache that provides O(1) time complexity for both get and put operations. The LRU cache maintains a fixed size and automatically removes the least recently used items when capacity is exceeded.
 
-LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
-* int get(int key) Return the value of the key if the key exists, otherwise return -1.
-* void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.
-* The functions get and put must each run in O(1) average time complexity.
+## Features
 
- 
+- Initialize cache with custom capacity
+- Get values by key with O(1) time complexity
+- Put key-value pairs with O(1) time complexity
+- Automatic eviction of least recently used items
+- Thread-safe operations (implementation dependent)
 
-Example 1:
+## API Reference
 
-Input:
-["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
-[[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+### Constructor
 
-Output:
-[null, null, null, 1, null, -1, null, -1, 3, 4]
+```java
+LRUCache(int capacity)
+```
 
-Explanation
-LRUCache lRUCache = new LRUCache(2);
-lRUCache.put(1, 1); // cache is {1=1}
-lRUCache.put(2, 2); // cache is {1=1, 2=2}
-lRUCache.get(1);    // return 1
-lRUCache.put(3, 3); // LRU key was 2, evicts key 2, cache is {1=1, 3=3}
-lRUCache.get(2);    // returns -1 (not found)
-lRUCache.put(4, 4); // LRU key was 1, evicts key 1, cache is {4=4, 3=3}
-lRUCache.get(1);    // return -1 (not found)
-lRUCache.get(3);    // return 3
-lRUCache.get(4);    // return 4
- 
+Initializes an LRU cache with the specified capacity.
 
-Constraints:
-1 <= capacity <= 3000
-0 <= key <= 104
-0 <= value <= 105
-At most 2 * 105 calls will be made to get and put.
+**Parameters:**
+- `capacity`: The maximum number of key-value pairs the cache can hold (must be positive)
+
+**Example:**
+```java
+LRUCache cache = new LRUCache(2); // Creates a cache that can hold 2 items
+```
+
+### Methods
+
+#### get
+
+```java
+int get(int key)
+```
+
+Retrieves the value associated with the given key. Updates the item's position as most recently used.
+
+**Parameters:**
+- `key`: The key to look up
+
+**Returns:**
+- The value associated with the key if it exists
+- -1 if the key doesn't exist in the cache
+
+**Example:**
+```java
+LRUCache cache = new LRUCache(2);
+cache.put(1, 1);
+cache.get(1);    // returns 1
+cache.get(2);    // returns -1 (not found)
+```
+
+#### put
+
+```java
+void put(int key, int value)
+```
+
+Inserts or updates a key-value pair in the cache. If the key exists, updates its value and marks it as most recently used. If the key doesn't exist, adds the pair and evicts the least recently used item if the cache is at capacity.
+
+**Parameters:**
+- `key`: The key to insert or update
+- `value`: The value to associate with the key
+
+**Example:**
+```java
+LRUCache cache = new LRUCache(2);
+cache.put(1, 1);    // cache is {1=1}
+cache.put(2, 2);    // cache is {1=1, 2=2}
+cache.put(3, 3);    // cache is {2=2, 3=3}, key 1 is evicted
+```
+
+## Implementation Details
+
+The O(1) time complexity is achieved by combining two data structures:
+1. A doubly-linked list to maintain the order of elements (most recent to least recent)
+2. A hash map to provide O(1) access to cache nodes
+
+## Time Complexity
+
+- Get: O(1)
+- Put: O(1)
+- Space Complexity: O(capacity)
+
+## Complete Usage Example
+
+```java
+LRUCache cache = new LRUCache(2);
+
+// Add some items
+cache.put(1, 1);          // cache is {1=1}
+cache.put(2, 2);          // cache is {1=1, 2=2}
+System.out.println(cache.get(1));       // returns 1
+cache.put(3, 3);          // evicts key 1, cache is {2=2, 3=3}
+System.out.println(cache.get(1));       // returns -1 (not found)
+System.out.println(cache.get(2));       // returns 2
+cache.put(4, 4);          // evicts key 2, cache is {3=3, 4=4}
+System.out.println(cache.get(2));       // returns -1 (not found)
+System.out.println(cache.get(3));       // returns 3
+System.out.println(cache.get(4));       // returns 4
+```
+
+## Edge Cases and Error Handling
+
+- Attempting to initialize with non-positive capacity should throw an IllegalArgumentException
+- Null keys or values are not supported (implementation dependent)
+- The cache maintains thread safety (implementation dependent)
+
+## Performance Considerations
+
+1. Memory Usage:
+   - Space complexity is O(capacity)
+   - Each entry requires storage for the key, value, and linked list node pointers
+
+2. Thread Safety:
+   - If thread safety is required, consider using synchronized methods or a concurrent implementation
+   - Be aware that synchronization may impact performance
